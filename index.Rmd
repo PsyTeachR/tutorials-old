@@ -5,25 +5,25 @@ date: "Last updated: `r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = tools::file_path_as_absolute("docs"))
-  })
+    })
+params:
+  srcpath: "content"
+  destpath: "docs"
+  clean: FALSE
 ---
 
 The material in these tutorials is governed by a [CC-BY license](https://github.com/PsyTeachR/tutorials/blob/main/LICENSE.md). Feel free to repurpose it for your own needs, but please cite the original if you do! The source files can be found at <https://github.com/psyteachr/tutorials>.
 
 ```{r compile, include=FALSE}
-srcpath <- "content"
-destpath <- "docs"
-clean <- FALSE  # set to TRUE to re-render everything
-
 ## let's compile all the Rmd files to html
 ## this block implements a simple 'Makefile' logic
 ## checking existence and comparing access times of src/dest files
-tuts_rmd <- dir(srcpath, "\\.[Rr][Mm][Dd]$")
-tuts_htm <- dir(destpath, "\\.[Hh][Tt][Mm][Ll]*$")
+tuts_rmd <- dir(params[["srcpath"]], "\\.[Rr][Mm][Dd]$")
+tuts_htm <- dir(params[["destpath"]], "\\.[Hh][Tt][Mm][Ll]*$")
 tuts_out <- tools::file_path_sans_ext(tuts_htm)
 
-if (clean) {
-  file.remove(file.path(destpath, tuts_htm))
+if (params[["clean"]]) {
+  file.remove(file.path(params[["destpath"]], tuts_htm))
 }
 
 for (fname in tuts_rmd) {
@@ -33,16 +33,19 @@ for (fname in tuts_rmd) {
   render <- FALSE
   if (length(destfile) == 1L) {
     ## check mod time on RMD and HTML file
-    srctime <- file.info(file.path(srcpath, fname))$mtime
-    desttime <- file.info(file.path(destpath, destfile))$mtime
+    srctime <- file.info(file.path(params[["srcpath"]], fname))$mtime
+    desttime <- file.info(file.path(params[["destpath"]], destfile))$mtime
     render <- desttime < srctime
+    if (is.na(render)) {
+      stop(destfile)
+    }
   } else {
     render <- TRUE
   }
 
   if (render) {
     message("rendering '", fname, "' to html...")
-    rmarkdown::render(file.path(srcpath, fname),
+    rmarkdown::render(file.path(params[["srcpath"]], fname),
                       output_dir = tools::file_path_as_absolute("docs"))
   }
 }

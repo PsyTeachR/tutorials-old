@@ -8,9 +8,8 @@ output: webex::webex_default
 
 Let's say you have a table like below, and you want to find the start and end frames where you have a run of `Z` amidst a, b, c, d.  Here is code that sets up this kind of situation. Don't worry if you don't understand this code; just run it to create the example data in `runsdata`, and have a look at that table.
 
-```{r runs-data}
+```{r runs-data, message=FALSE}
 library("tidyverse")
-library("knitr")
 
 create_run_vec <- function() {
   ## create a random string of letters with two runs
