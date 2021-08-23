@@ -25,7 +25,7 @@ Let's assume that answers are on a scale made up of the values "Never", "Sometim
 
 Here is some (also made-up) data from five participants, stored in a tibble named `dat`.
 
-```{r make-dat, echo=FALSE}
+```{r make-dat, echo=FALSE, message = FALSE}
 library("tidyverse")
 
 dat <- tribble(

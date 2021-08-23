@@ -20,11 +20,13 @@ The material in these tutorials is governed by a [CC-BY license](https://github.
 ## checking existence and comparing access times of src/dest files
 tuts_rmd <- dir(params[["srcpath"]], "\\.[Rr][Mm][Dd]$")
 tuts_htm <- dir(params[["destpath"]], "\\.[Hh][Tt][Mm][Ll]*$")
-tuts_out <- tools::file_path_sans_ext(tuts_htm)
 
 if (params[["clean"]]) {
   file.remove(file.path(params[["destpath"]], tuts_htm))
+  tuts_htm <- dir(params[["destpath"]], "\\.[Hh][Tt][Mm][Ll]*$")
 }
+
+tuts_out <- tools::file_path_sans_ext(tuts_htm)
 
 for (fname in tuts_rmd) {
   ## check if file does not exist or mod time is earlier than source
