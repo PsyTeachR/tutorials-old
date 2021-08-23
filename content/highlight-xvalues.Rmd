@@ -2,6 +2,7 @@
 title: Highlight a range of x-values on a ggplot
 author: Dale Barr
 date: March 23, 2020
+category: "Plotting"
 ---
 
 Sometimes you want to highlight a particular range of values; for example, a particular period of time in a time series.

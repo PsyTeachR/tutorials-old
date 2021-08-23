@@ -2,11 +2,14 @@
 title: Detecting "runs" in a sequence
 author: Dale Barr
 date: October 30, 2019
+category: "Data Wrangling"
+output: webex::webex_default
 ---
 
 Let's say you have a table like below, and you want to find the start and end frames where you have a run of `Z` amidst a, b, c, d.  Here is code that sets up this kind of situation. Don't worry if you don't understand this code; just run it to create the example data in `runsdata`, and have a look at that table.
 
 ```{r runs-data}
+library("tidyverse")
 library("knitr")
 
 create_run_vec <- function() {
@@ -32,7 +35,9 @@ runsdata <- tibble(
 
 Let's say you want to find the start and stop frames where `Z` appears in `stimulus`, and do this independently for each combination of `subject` and `trial`.  Here's how `stimulus` looks for subject 1 and trial 1.
 
-```{r show-runs-data, echo = FALSE}
+```{r show-runs-data, echo = FALSE, message=FALSE}
+library("tidyverse")
+
 ## knitr::kable(runsdata, format = "html") %>%
 ##  kableExtra::kable_styling()
 s1t1 <- runsdata %>% filter(subject == 1L, trial == 1L) %>% pull(stimulus)

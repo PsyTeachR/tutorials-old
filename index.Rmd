@@ -1,0 +1,78 @@
+---
+title: PsyTeachR Tutorials
+author: "School of Psychology and Neuroscience, University of Glasgow"
+date: "Last updated: `r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = tools::file_path_as_absolute("docs"))
+  })
+---
+
+The material in these tutorials is governed by a [CC-BY license](https://github.com/PsyTeachR/tutorials/blob/main/LICENSE.md). Feel free to repurpose it for your own needs, but please cite the original if you do! The source files can be found at <https://github.com/psyteachr/tutorials>.
+
+```{r compile, include=FALSE}
+srcpath <- "content"
+destpath <- "docs"
+clean <- FALSE  # set to TRUE to re-render everything
+
+## let's compile all the Rmd files to html
+## this block implements a simple 'Makefile' logic
+## checking existence and comparing access times of src/dest files
+tuts_rmd <- dir(srcpath, "\\.[Rr][Mm][Dd]$")
+tuts_htm <- dir(destpath, "\\.[Hh][Tt][Mm][Ll]*$")
+tuts_out <- tools::file_path_sans_ext(tuts_htm)
+
+if (clean) {
+  file.remove(file.path(destpath, tuts_htm))
+}
+
+for (fname in tuts_rmd) {
+  ## check if file does not exist or mod time is earlier than source
+  destfile <- grep(tools::file_path_sans_ext(fname), tuts_htm, value = TRUE)
+  
+  render <- FALSE
+  if (length(destfile) == 1L) {
+    ## check mod time on RMD and HTML file
+    srctime <- file.info(file.path(srcpath, fname))$mtime
+    desttime <- file.info(file.path(destpath, destfile))$mtime
+    render <- desttime < srctime
+  } else {
+    render <- TRUE
+  }
+
+  if (render) {
+    message("rendering '", fname, "' to html...")
+    rmarkdown::render(file.path(srcpath, fname),
+                      output_dir = tools::file_path_as_absolute("docs"))
+  }
+}
+```
+
+```{r auto-links, echo=FALSE, results='asis'}
+## now we're done rendering; get the html files
+
+## get the yaml front matter from all the files
+yaml <- lapply(tuts_rmd, \(x) rmarkdown::yaml_front_matter(
+                                           file.path("content", x)))
+names(yaml) <- paste0(tools::file_path_sans_ext(tuts_rmd), ".html")
+
+## get categories
+allcats <- sapply(yaml, \(x) x[["category"]])
+alltitles <- sapply(yaml, \(x) x[["title"]])
+cats <- sort(unique(allcats))
+
+cat("\n")
+
+for (ctg in cats) {
+  cat("## ", ctg, "\n\n", sep = "")
+
+  ## get all the tutorials in this category
+  tut_ix <- which(allcats == ctg)
+
+  for (i in tut_ix) {
+    cat("[", alltitles[i], "](", names(yaml)[i], ")", sep = "")
+    cat("\n\n")
+  }
+  cat("\n")
+}
+```
