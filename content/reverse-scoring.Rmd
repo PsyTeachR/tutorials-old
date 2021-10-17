@@ -3,13 +3,13 @@ title: How to reverse score questionnaire items
 author: Dale Barr
 date: January 2021
 category: "Questionnaire Data"
-output: webex::webex_default
+output: webexercises::webexercises_default
 ---
 
 Sometimes it's necessary to reverse the scores given to questionnaire items. For instance, if your scale is the Dog Appreciation Scale (DAS) [I just made this up] you might have some items where 'strongly agree' is associated with appreciating dogs (and should be given the highest score) while other items where it is associated with loathing them (and should be given the lowest).
 
 ```{r hidden, include=FALSE}
-library("webex")
+library("webexercises")
 ```
 
 ```{r make-das, echo=FALSE}

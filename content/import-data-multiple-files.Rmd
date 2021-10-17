@@ -3,7 +3,9 @@ title: "Importing data from multiple files"
 author: Dale Barr
 date: "October 30, 2019"
 category: "Data Wrangling"
-output: webex::webex_default
+output: 
+  webexercises::webexercises_default:
+    df_print: kable
 ---
 
 Sometimes you have multiple files, and you want to read them into one big table for analysis. The following code allows you to read in a whole bunch of files from a subdirectory.
@@ -14,7 +16,7 @@ The main work is accomplished using the `map()` function below from the `{purrr}
 
 If you want to run the example to see how things work, you'll need to set up your environment with some sample files.
 
-`r webex::hide("Click here to see how to set things up so you can run the example code below")`
+`r hide("Click here to see how to set things up so you can run the example code below")`
 
 ```{r setup-dir, echo=TRUE, message=FALSE}
 library("tidyverse")
@@ -27,7 +29,7 @@ write_csv(iris %>% slice(6:10), file.path("datadir", "S02.csv"))
 write_csv(iris %>% slice(11:15), file.path("datadir", "S03.csv"))
 ```
 
-`r webex::unhide()`
+`r unhide()`
 
 <br/><br/>
 

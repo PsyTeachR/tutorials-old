@@ -3,7 +3,9 @@ title: Detecting "runs" in a sequence
 author: Dale Barr
 date: October 30, 2019
 category: "Data Wrangling"
-output: webex::webex_default
+output: 
+  webexercises::webexercises_default:
+    df_print: kable
 ---
 
 Let's say you have a table like below, and you want to find the start and end frames where you have a run of `Z` amidst a, b, c, d.  Here is code that sets up this kind of situation. Don't worry if you don't understand this code; just run it to create the example data in `runsdata`, and have a look at that table.
@@ -65,7 +67,7 @@ The first thing to do is to add a logical vector to your tibble whose value is `
 runsdata_tgt <- runsdata %>%
   mutate(is_target = (stimulus == "Z"))
 
-runsdata_tgt
+head(runsdata_tgt)
 ```
 
 We want to iterate over subjects and trials. We'll start by creating a tibble with columns `is_target` nested into a column called `subtbl`.
@@ -115,16 +117,17 @@ OK, now we're ready to run the function.
 result <- runs_nest %>%
   mutate(runstbl = map(subtbl, detect_runs))
 
-result
+head(result)
 ```
 
 Now we just have to unnest and we're done!
 
 ```{r unnest}
-result %>%
+data <- result %>%
   select(-subtbl) %>%
   unnest(runstbl)
 
+head(data)
 ```
 
 

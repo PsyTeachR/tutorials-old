@@ -3,11 +3,11 @@ title: Converting string values to numeric values for questionnaire scoring
 author: Dale Barr
 date: "August 18, 2021"
 category: "Questionnaire Data"
-output: webex::webex_default
+output: webexercises::webexercises_default
 ---
 
 ```{r hidden, include=FALSE}
-library(webex)
+library(webexercises)
 ```
 
 A very common situation is that you want to convert string values ("Almost Always", "Frequently") into numeric values (5, 4, etc) so that we can calculate a score.
